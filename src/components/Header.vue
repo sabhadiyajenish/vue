@@ -8,6 +8,7 @@ const router = useRouter();
 
 const route = useRoute();
 const status = ref(false);
+
 const LoginCheck = computed(() => {
   return store.getters.getLoginStatus;
 });
@@ -28,6 +29,8 @@ const isActive = (path) => {
 };
 const handleLogout = () => {
   localStorage.setItem("LoginStatus", false);
+  const storedStatus = localStorage.getItem("LoginStatus");
+  status.value = Boolean(storedStatus === "true");
   store.commit("setLoginStatus", false);
 
   router.push("/login");
@@ -61,7 +64,7 @@ const handleLogout = () => {
           <a
             v-else
             @click="handleLogout"
-            class="text-white bg-primary-700 cursor-pointer hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
             >Logout</a
           >
           <button
