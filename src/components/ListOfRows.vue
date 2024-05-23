@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { reactive, onMounted, computed, ref, watch } from "vue";
+import { reactive, onMounted, computed, ref, watch, watchEffect } from "vue";
 import { useStore } from "vuex";
 import ProductCard from "./Products/ProductCard.vue";
 const store = useStore();
@@ -20,18 +20,14 @@ const instaData = computed(() => {
 const CartData = computed(() => {
   return store.getters.getCartData;
 });
-watch(
-  CartData,
-  () => {
-    const res = CartData.value.reduce((acc, curr) => acc + curr.price, 0);
-    totalPrice.value = res;
-    console.log("<<<<<<<<<<<<<<<<");
-  },
-  { deep: true }
-);
+watchEffect(() => {
+  const res = CartData.value.reduce((acc, curr) => acc + curr.price, 0);
+  totalPrice.value = res;
+});
+
 const fetDataFromApi = async () => {
   const res = await axios.get("https://dummyjson.com/products");
-  console.log(res?.data?.products);
+  // console.log(res?.data?.products);
   store.commit("setUserData", res?.data);
 };
 const DeleteCartData = (items) => {

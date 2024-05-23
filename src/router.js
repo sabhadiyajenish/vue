@@ -6,6 +6,8 @@ import Service from "./components/Service/Service.vue";
 import Contact from "./components/Contact/Contact.vue";
 import AboutPage from "./components/About/AboutPage.vue";
 import CardDetails from "./components/CardDetails/CardDetails.vue";
+import LoginPage from "./components/Login/LoginPage.vue";
+import { useStore } from "vuex";
 const routes = [
   {
     path: "/",
@@ -16,6 +18,7 @@ const routes = [
     path: "/company",
     name: "Company",
     component: Company,
+    meta: { requiresAuth: true },
   },
   {
     path: "/contact",
@@ -32,7 +35,11 @@ const routes = [
     name: "Service",
     component: Service,
   },
-
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginPage,
+  },
   {
     path: "/carddetails/:id",
     name: "carddetails",
@@ -44,6 +51,28 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("LoginStatus") === "true";
+
+  // console.log(isAuthenticated);
+
+  // If accessing the login route and already authenticated, redirect to homepage
+  if (to.name === "Login" && isAuthenticated) {
+    next("/");
+  } else if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Check if user is authenticated for other routes that require authentication
+    if (isAuthenticated) {
+      next();
+    } else {
+      // If not authenticated, redirect to login page
+      next("/login");
+    }
+  } else {
+    // Allow navigation for routes that don't require authentication
+    next();
+  }
 });
 
 export default router;

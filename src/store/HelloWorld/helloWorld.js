@@ -2,6 +2,7 @@ export default {
   state: {
     instaData: [],
     addedCartList: [],
+    loginStatus: false,
   },
   mutations: {
     setUserData: (state, action) => {
@@ -12,6 +13,9 @@ export default {
     },
     setCartDataArray: (state, action) => {
       state.addedCartList = action;
+    },
+    setLoginStatus: (state, action) => {
+      state.loginStatus = action;
     },
   },
   actions: {
@@ -26,6 +30,9 @@ export default {
     },
     getCartData(state) {
       return state.addedCartList;
+    },
+    getLoginStatus(state) {
+      return state.loginStatus;
     },
   },
 };

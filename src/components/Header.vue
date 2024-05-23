@@ -1,11 +1,36 @@
 <script setup>
-import { useRoute } from "vue-router";
+import { computed, onMounted, ref, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+const store = useStore();
+
+const router = useRouter();
 
 const route = useRoute();
+const status = ref(false);
+const LoginCheck = computed(() => {
+  return store.getters.getLoginStatus;
+});
+watchEffect(() => {
+  const storedStatus = localStorage.getItem("LoginStatus");
+  console.log("routes user<<<", storedStatus);
+  if (LoginCheck.value !== true) {
+    status.value = Boolean(storedStatus === "true");
+  } else {
+    status.value = LoginCheck.value;
+  }
+});
 
+console.log("getvstatus form store", LoginCheck.value);
 const isActive = (path) => {
   // Check if the current route path matches the given path
   return route.path === path;
+};
+const handleLogout = () => {
+  localStorage.setItem("LoginStatus", false);
+  store.commit("setLoginStatus", false);
+
+  router.push("/login");
 };
 </script>
 
@@ -27,15 +52,17 @@ const isActive = (path) => {
           >
         </a>
         <div class="flex items-center lg:order-2">
-          <a
-            href="#"
+          <router-link
+            v-if="!status"
+            to="/login"
             class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-            >Log in</a
+            >Log in</router-link
           >
           <a
-            href="#"
-            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-            >Sign-up</a
+            v-else
+            @click="handleLogout"
+            class="text-white bg-primary-700 cursor-pointer hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+            >Logout</a
           >
           <button
             data-collapse-toggle="mobile-menu-2"
