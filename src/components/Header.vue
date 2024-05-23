@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { BeakerIcon } from "@heroicons/vue/24/solid";
 const store = useStore();
 
 const router = useRouter();
@@ -11,6 +12,9 @@ const status = ref(false);
 
 const LoginCheck = computed(() => {
   return store.getters.getLoginStatus;
+});
+const CartData = computed(() => {
+  return store.getters.getCartData;
 });
 watchEffect(() => {
   const storedStatus = localStorage.getItem("LoginStatus");
@@ -69,6 +73,31 @@ const handleLogout = () => {
             class="text-white cursor-pointer bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
             >Logout</a
           >
+          <div class="relative">
+            <router-link v-if="!status" to="/cartlist">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+
+              <p
+                class="w-5 h-5 text-center absolute top-0 right-0 text-[12px] rounded-full bg-red-400"
+                v-if="CartData.length !== 0"
+              >
+                {{ CartData.length }}
+              </p>
+            </router-link>
+          </div>
           <button
             data-collapse-toggle="mobile-menu-2"
             type="button"

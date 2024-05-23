@@ -8,6 +8,8 @@ import AboutPage from "./components/About/AboutPage.vue";
 import CardDetails from "./components/CardDetails/CardDetails.vue";
 import LoginPage from "./components/Login/LoginPage.vue";
 import DashboardPage from "./components/Dashboard/DashboardPage.vue";
+import CartListPage from "./components/CartList/CartListPage.vue";
+
 const routes = [
   {
     path: "/",
@@ -45,6 +47,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginPage,
+  },
+  {
+    path: "/cartlist",
+    name: "Cartlist",
+    component: CartListPage,
   },
   {
     path: "/carddetails/:id",
