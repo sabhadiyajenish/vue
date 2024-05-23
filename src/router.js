@@ -7,7 +7,7 @@ import Contact from "./components/Contact/Contact.vue";
 import AboutPage from "./components/About/AboutPage.vue";
 import CardDetails from "./components/CardDetails/CardDetails.vue";
 import LoginPage from "./components/Login/LoginPage.vue";
-import { useStore } from "vuex";
+import DashboardPage from "./components/Dashboard/DashboardPage.vue";
 const routes = [
   {
     path: "/",
@@ -34,6 +34,12 @@ const routes = [
     path: "/service",
     name: "Service",
     component: Service,
+  },
+  {
+    path: "/charts",
+    name: "charts",
+    meta: { requiresAuth: true },
+    component: DashboardPage,
   },
   {
     path: "/login",

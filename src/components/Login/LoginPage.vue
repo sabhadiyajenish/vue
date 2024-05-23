@@ -19,7 +19,24 @@ const handleSubmit = () => {
       inputValue.password === "12345"
     ) {
       localStorage.setItem("LoginStatus", true);
+      localStorage.setItem("UserRole", "admin");
+
       store.commit("setLoginStatus", true);
+      store.commit("setLoginRoles", "admin");
+      alert("Login Successfully");
+      router.go(-1);
+      inputValue.email = "";
+      inputValue.password = "";
+    } else if (
+      inputValue.email === "User@gmail.com" &&
+      inputValue.password === "12345"
+    ) {
+      localStorage.setItem("LoginStatus", true);
+      localStorage.setItem("UserRole", "user");
+
+      store.commit("setLoginStatus", true);
+      store.commit("setLoginRoles", "user");
+
       alert("Login Successfully");
       router.go(-1);
       inputValue.email = "";

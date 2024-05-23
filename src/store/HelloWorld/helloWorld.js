@@ -3,6 +3,7 @@ export default {
     instaData: [],
     addedCartList: [],
     loginStatus: false,
+    loginType: "",
   },
   mutations: {
     setUserData: (state, action) => {
@@ -16,6 +17,9 @@ export default {
     },
     setLoginStatus: (state, action) => {
       state.loginStatus = action;
+    },
+    setLoginRoles: (state, action) => {
+      state.loginType = action;
     },
   },
   actions: {
@@ -33,6 +37,9 @@ export default {
     },
     getLoginStatus(state) {
       return state.loginStatus;
+    },
+    getLoginRole(state) {
+      return state.loginType;
     },
   },
 };
